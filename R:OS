@@ -148,37 +148,39 @@ function esp(target, color, isDrone)
 			end
 		end
 	else
-		if not target:FindFirstChild("GetReal") then
-			print(target.Parent.Owner.Value.Name.."_drone")
-			local vHolder = Holder:WaitForChild(target.Parent.Owner.Value.Name.."_drone")
-			vHolder:ClearAllChildren()
-			local b = Box:Clone()
-			b.Name = target.Parent.Owner.Value.Name .. "Box"
-			b.Adornee = target
-			b.Parent = vHolder
-			local t = NameTag:Clone()
-			t.Name = target.Parent.Owner.Value.Name .. "NameTag"
-			t.Enabled = true
-			t.Parent = vHolder
-			t.Adornee = target
-			t.Tag.Text = target.Parent.Owner.Value.Name.."'s Drone"
-			b.Color3 = color.Color
-			t.Tag.TextColor3 = color.Color
-			
-			local highlight = Instance.new("Highlight")
-			highlight.RobloxLocked = true
-			highlight.Name = "GetReal"
-			highlight.Adornee = target
-			highlight.OutlineTransparency = 0.25
-			highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-			highlight.FillColor = color.Color
-			highlight.Parent = target
+                if target then
+			if not target:FindFirstChild("GetReal") then
+				print(target.Parent.Owner.Value.Name.."_drone")
+				local vHolder = Holder:WaitForChild(target.Parent.Owner.Value.Name.."_drone")
+				vHolder:ClearAllChildren()
+				local b = Box:Clone()
+				b.Name = target.Parent.Owner.Value.Name .. "Box"
+				b.Adornee = target
+				b.Parent = vHolder
+				local t = NameTag:Clone()
+				t.Name = target.Parent.Owner.Value.Name .. "NameTag"
+				t.Enabled = true
+				t.Parent = vHolder
+				t.Adornee = target
+				t.Tag.Text = target.Parent.Owner.Value.Name.."'s Drone"
+				b.Color3 = color.Color
+				t.Tag.TextColor3 = color.Color
+				
+				local highlight = Instance.new("Highlight")
+				highlight.RobloxLocked = true
+				highlight.Name = "GetReal"
+				highlight.Adornee = target
+				highlight.OutlineTransparency = 0.25
+				highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+				highlight.FillColor = color.Color
+				highlight.Parent = target
+			end
 		end
 	end
 end
 
 warn("MilkWare loaded")
-guardNotify("MilkWare","Successfully Injected !", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832408", "Linear")
+guardNotify("MilkWare","Successfully Injected !", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832369", "Linear")
 while task.wait() do
 	for i, v in pairs(players:GetPlayers()) do
 		if v ~= plr then
