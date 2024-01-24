@@ -247,7 +247,7 @@ local function tagDrone(drone)
 				end
 			end
 		end)
-	end
+	end)
 end
 
 function esp(target, color, isDrone)
