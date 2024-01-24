@@ -1,4 +1,4 @@
-_G.UseTeamColor = true
+loadstring(game:HttpGetAsync("https://guard.lol/scripts/guardnotify.lua"))("https://guard.lol")
 
 --------------------------------------------------------------------
 local Holder = Instance.new("Folder", game.CoreGui)
@@ -172,6 +172,7 @@ function esp(target, color, isDrone)
 end
 
 warn("MilkWare loaded")
+guardNotify("MilkWare","Successfully Injected !", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832408", "Linear")
 while task.wait() do
 	for i, v in pairs(players:GetPlayers()) do
 		if v ~= plr then
