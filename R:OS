@@ -45,60 +45,6 @@ Tag.Text = "nil"
 Tag.Font = Enum.Font.SourceSansBold
 Tag.TextScaled = false
 
-local boxCache = {};
-local function createBox(player)
-   local drawings = {};
-   
-   drawings.box = newDrawing("Square");
-   drawings.box.Thickness = 1;
-   drawings.box.Filled = false;
-   drawings.box.Color = settings.defaultcolor;
-   drawings.box.Visible = false;
-   drawings.box.ZIndex = 2;
-
-   drawings.boxoutline = newDrawing("Square");
-   drawings.boxoutline.Thickness = 3;
-   drawings.boxoutline.Filled = false;
-   drawings.boxoutline.Color = newColor3();
-   drawings.boxoutline.Visible = false;
-   drawings.boxoutline.ZIndex = 1;
-
-   boxCache[player] = drawings;
-end
-local function removeBox(player)
-   if rawget(boxCache, player) then
-       for _, drawing in next, boxCache[player] do
-           drawing:Remove();
-       end
-       boxCache[player] = nil;
-   end
-end
-local function updateBox(player, esp)
-   local character = player and player.Character;
-   if character then
-       local cframe = character:GetModelCFrame();
-       local position, visible, depth = wtvp(cframe.Position);
-       esp.box.Visible = visible;
-       esp.boxoutline.Visible = visible;
-
-       if cframe and visible then
-           local scaleFactor = 1 / (depth * tan(rad(camera.FieldOfView / 2)) * 2) * 1000;
-           local width, height = round(4 * scaleFactor, 5 * scaleFactor);
-           local x, y = round(position.X, position.Y);
-
-           esp.box.Size = newVector2(width, height);
-           esp.box.Position = newVector2(round(x - width / 2, y - height / 2));
-           esp.box.Color = player.TeamColor.Color
-
-           esp.boxoutline.Size = esp.box.Size;
-           esp.boxoutline.Position = esp.box.Position;
-       end
-   else
-       esp.box.Visible = false;
-       esp.boxoutline.Visible = false;
-   end
-end
-
 local LoadCharacter = function(v)
 	repeat wait() until v.Character ~= nil
 	v.Character:WaitForChild("Humanoid")
@@ -146,8 +92,6 @@ local UnloadCharacter = function(v)
 end
 
 local LoadPlayer = function(v)
-	createBox(v)
-	
 	local vHolder = Instance.new("Folder", Holder)
 	vHolder.Name = v.Name
 	local dHolder = Instance.new("Folder", Holder)
@@ -178,7 +122,6 @@ end
 
 for i,v in pairs(game:GetService("Players"):GetPlayers()) do
 	if v ~= game:GetService("Players").LocalPlayer then
-		createBox(v)
 		spawn(function() pcall(LoadPlayer, v) end)
 	end
 end
@@ -188,7 +131,6 @@ game:GetService("Players").PlayerAdded:Connect(function(v)
 end)
 
 game:GetService("Players").PlayerRemoving:Connect(function(v)
-	removeEsp(v)
 	pcall(UnloadPlayer, v)
 end)
 
@@ -288,14 +230,6 @@ function esp(target, color, isDrone)
 		end
 	end
 end
-
-game:GetService("RunService"):BindToRenderStep("ESP", Enum.RenderPriority.Camera.Value, function()
-   for player, drawings in next, boxCache do
-       if drawings and player ~= localPlayer then
-           updateBox(player, drawings);
-       end
-   end
-end)
 
 warn("MilkWare loaded")
 guardNotify("MilkWare","Successfully Injected !", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832369", "Linear")
