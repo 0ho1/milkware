@@ -52,6 +52,11 @@ local LoadCharacter = function(v)
 	t.Tag.Text = v.Name
 	b.Color3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
 	t.Tag.TextColor3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
+
+	if v.TeamColor == game:GetService("Players").LocalPlayer.TeamColor then
+		t.Enabled = false
+	end
+
 	local Update
 	local UpdateNameTag = function()
 		if not pcall(function()
