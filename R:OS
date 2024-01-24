@@ -143,19 +143,19 @@ function esp(target, color, isDrone)
 		end
 	else
 		if not target:FindFirstChild("GetReal") then
-			print(target.Parent.Owner.Value.."_drone")
+			print(target.Parent.Owner.Value.Name.."_drone")
 			local vHolder = Holder:WaitForChild(target.Parent.Owner.Value.."_drone")
 			vHolder:ClearAllChildren()
 			local b = Box:Clone()
-			b.Name = target.Parent.Owner.Value .. "Box"
+			b.Name = target.Parent.Owner.Value.Name .. "Box"
 			b.Adornee = target
 			b.Parent = vHolder
 			local t = NameTag:Clone()
-			t.Name = target.Parent.Owner.Value .. "NameTag"
+			t.Name = target.Parent.Owner.Value.Name .. "NameTag"
 			t.Enabled = true
 			t.Parent = vHolder
 			t.Adornee = target
-			t.Tag.Text = target.Parent.Owner.Value.."'s Drone"
+			t.Tag.Text = target.Parent.Owner.Value.Name.."'s Drone"
 			b.Color3 = color.Color
 			t.Tag.TextColor3 = color.Color
 			
@@ -171,6 +171,7 @@ function esp(target, color, isDrone)
 	end
 end
 
+warn("MilkWare loaded")
 while task.wait() do
 	for i, v in pairs(players:GetPlayers()) do
 		if v ~= plr then
@@ -187,4 +188,3 @@ while task.wait() do
 		end
 	end
 end
-warn("MilkWare loaded")
