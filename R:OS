@@ -137,6 +137,12 @@ function esp(target, color, isDrone)
 				highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 				highlight.FillColor = color
 				highlight.Parent = target.Character
+
+				if highlight.FillColor == game:GetService("Players").LocalPlayer.Team.TeamColor.Color then
+					highlight.Enabled = false
+				else
+					highlight.Enabled = true
+				end
 			else
 				target.Character.GetReal.FillColor = color
 			end
@@ -144,7 +150,7 @@ function esp(target, color, isDrone)
 	else
 		if not target:FindFirstChild("GetReal") then
 			print(target.Parent.Owner.Value.Name.."_drone")
-			local vHolder = Holder:WaitForChild(target.Parent.Owner.Value.."_drone")
+			local vHolder = Holder:WaitForChild(target.Parent.Owner.Value.Name.."_drone")
 			vHolder:ClearAllChildren()
 			local b = Box:Clone()
 			b.Name = target.Parent.Owner.Value.Name .. "Box"
