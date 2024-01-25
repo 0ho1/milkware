@@ -81,7 +81,9 @@ local LoadCharacter = function(v)
 	        if not t.Enabled then
 	            if v.Character:FindFirstChild("Humanoid") then
 	                if v.Character:FindFirstChild("Humanoid").Health > 1 then
-	                    t.Enabled = true
+		            if v.TeamColor ~= game:GetService("Players").LocalPlayer.TeamColor then
+				t.Enabled = true
+			    end
 	                end
 	            else
 	                break
