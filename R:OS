@@ -147,6 +147,10 @@ local plr = players.LocalPlayer
 local dependencies = {workspace:WaitForChild("SE_Workspace")}
 
 local function tagDrone(drone, color)
+	if not drone.Parent:FindFirstChild("Owner") then
+		return
+	end
+
 	print(drone.Parent.Owner.Value.Name.."_drone")
 	
 	local vHolder = Holder:WaitForChild(drone.Parent.Owner.Value.Name.."_drone")
