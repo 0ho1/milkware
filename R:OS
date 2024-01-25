@@ -72,6 +72,9 @@ local LoadCharacter = function(v)
 		v.Character:FindFirstChild("Humanoid").Died:Connect(function()
 			t.Enabled = false
 		end)
+		if v.Character:FindFirstChild("Humanoid").Health < 0.01 then
+		    t.Enabled = false
+		end
 	end
 
 	local Update
@@ -170,14 +173,14 @@ local function tagDrone(drone, color)
 	
 	local b = Box:Clone()
 	b.Name = drone.Parent.Owner.Value.Name .. "Box"
-	b.Adornee = target
+	b.Adornee = drone
 	b.Parent = vHolder
 	
 	local t = NameTag:Clone()
 	t.Name = drone.Parent.Owner.Value.Name .. "NameTag"
 	t.Enabled = true
 	t.Parent = vHolder
-	t.Adornee = target
+	t.Adornee = drone
 	t.Tag.Text = drone.Parent.Owner.Value.Name.."'s Drone"
 	b.Color3 = color.Color
 	t.Tag.TextColor3 = color.Color
@@ -192,14 +195,14 @@ local function tagDrone(drone, color)
 			
 			connection:Disconnect()
 		end
-		connection = game.GetService("RunService").RenderStepped:Connect(function()
+		connection = game:GetService("RunService").RenderStepped:Connect(function()
 			if drone == nil or drone.Parent == nil then
 				unload()
 			else
-				if drone.Humanoid.Health < 1 then
+				if drone.Parent:FindFirstChild("Humanoid").Health < 0.01 then
 					unload()
 				else
-					if not drone:FindFirstChild("Humanoid") then
+					if not drone.Parent:FindFirstChild("Humanoid") then
 						unload()
 					end
 				end
@@ -230,7 +233,7 @@ function esp(target, color, isDrone)
 			end
 		end
 	else
-                if target then
+        if target then
 			if not target:FindFirstChild("GetReal") then
 				tagDrone(target, color)
 				
@@ -238,7 +241,7 @@ function esp(target, color, isDrone)
 				highlight.RobloxLocked = true
 				highlight.Name = "GetReal"
 				highlight.Adornee = target
-				highlight.OutlineTransparency = 0.25
+				highlight.OutlineTransparency = 0.325
 				highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 				highlight.FillColor = color.Color
 				highlight.Parent = target
