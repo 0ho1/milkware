@@ -176,7 +176,7 @@ local function tagDrone(drone, color)
 			
 			connection:Disconnect()
 		end
-		connection = game.GetService("RunService").RenderStepped:Connect(function()
+		connection = game.GetService("RunService"):RenderStepped:Connect(function()
 			if drone == nil or drone.Parent == nil then
 				unload()
 			else
