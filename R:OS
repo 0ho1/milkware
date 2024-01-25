@@ -149,11 +149,19 @@ local dependencies = {workspace:WaitForChild("SE_Workspace")}
 local function tagDrone(drone, color)
 	if not drone.Parent:FindFirstChild("Owner") then
 		return
+	else
+		if  drone.Parent.Owner.Value.Name == game:GetService("Players").LocalPlayer.Name then
+			return
+		end
 	end
 
 	print(drone.Parent.Owner.Value.Name.."_drone")
 	
-	local vHolder = Holder:WaitForChild(drone.Parent.Owner.Value.Name.."_drone")
+	local vHolder = Holder:WaitForChild(drone.Parent.Owner.Value.Name.."_drone", 1)
+	if not vHolder then
+		return
+	end
+
 	vHolder:ClearAllChildren()
 	
 	local b = Box:Clone()
