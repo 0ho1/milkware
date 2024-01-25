@@ -218,16 +218,18 @@ end
 function esp(target, color, isDrone)
 	if not isDrone then
 		if target.Character then
-			if not target.Character:FindFirstChild("GetReal") and color ~= game:GetService("Players").LocalPlayer.Team.TeamColor.Color then
-				local highlight = Instance.new("Highlight")
-				highlight.RobloxLocked = true
-				highlight.Name = "GetReal"
-				highlight.Adornee = target.Character
-				highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-				highlight.FillColor = color
-				highlight.Parent = target.Character
-
-				highlight.Enabled = true
+			if not target.Character:FindFirstChild("GetReal") then
+				if color ~= game:GetService("Players").LocalPlayer.Team.TeamColor.Color then
+					local highlight = Instance.new("Highlight")
+					highlight.RobloxLocked = true
+					highlight.Name = "GetReal"
+					highlight.Adornee = target.Character
+					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlight.FillColor = color
+					highlight.Parent = target.Character
+	
+					highlight.Enabled = true	
+				end
 			else
 				target.Character.GetReal.FillColor = color
 			end
