@@ -69,6 +69,8 @@ local LoadCharacter = function(v)
 	if v.TeamColor == game:GetService("Players").LocalPlayer.TeamColor then
 		t.Enabled = false
 	else
+		t.Enabled = false
+		
 		v.Character:FindFirstChild("Humanoid").Died:Connect(function()
 			t.Enabled = false
 		end)
@@ -188,10 +190,12 @@ local function tagDrone(drone, color)
 	task.spawn(function()
 		local connection
 		local function unload()
-			local vHolder = Holder:FindFirstChild(drone.Parent.Owner.Value.Name)
-			if vHolder and (vHolder:FindFirstChild(drone.Parent.Owner.Value.Name .. "Box") ~= nil or vHolder:FindFirstChild(drone.Parent.Owner.Value.Name .. "NameTag") ~= nil) then
-				vHolder:ClearAllChildren()
-			end
+			pcall(function()
+				local vHolder = Holder:FindFirstChild(drone.Parent.Owner.Value.Name)
+				if vHolder and (vHolder:FindFirstChild(drone.Parent.Owner.Value.Name .. "Box") ~= nil or vHolder:FindFirstChild(drone.Parent.Owner.Value.Name .. "NameTag") ~= nil) then
+					vHolder:ClearAllChildren()
+				end
+			end)
 			
 			connection:Disconnect()
 		end
