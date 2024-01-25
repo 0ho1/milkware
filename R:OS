@@ -68,6 +68,10 @@ local LoadCharacter = function(v)
 
 	if v.TeamColor == game:GetService("Players").LocalPlayer.TeamColor then
 		t.Enabled = false
+	else
+		v.Character:FindFirstChild("Humanoid").Died:Connect(function()
+			t.Enabled = false
+		end)
 	end
 
 	local Update
