@@ -216,7 +216,7 @@ function esp(target, color, isDrone)
 	else
                 if target then
 			if not target:FindFirstChild("GetReal") then
-				tag(target)
+				tagDrone(target)
 				
 				local highlight = Instance.new("Highlight")
 				highlight.RobloxLocked = true
