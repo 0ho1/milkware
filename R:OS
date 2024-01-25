@@ -214,7 +214,7 @@ end
 function esp(target, color, isDrone)
 	if not isDrone then
 		if target.Character then
-			if not target.Character:FindFirstChild("GetReal") then
+			if not target.Character:FindFirstChild("GetReal") and color ~= game:GetService("Players").LocalPlayer.Team.TeamColor.Color then
 				local highlight = Instance.new("Highlight")
 				highlight.RobloxLocked = true
 				highlight.Name = "GetReal"
@@ -223,11 +223,7 @@ function esp(target, color, isDrone)
 				highlight.FillColor = color
 				highlight.Parent = target.Character
 
-				if highlight.FillColor == game:GetService("Players").LocalPlayer.Team.TeamColor.Color then
-					highlight.Enabled = false
-				else
-					highlight.Enabled = true
-				end
+				highlight.Enabled = true
 			else
 				target.Character.GetReal.FillColor = color
 			end
