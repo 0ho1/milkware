@@ -69,16 +69,26 @@ local LoadCharacter = function(v)
 	if v.TeamColor == game:GetService("Players").LocalPlayer.TeamColor then
 		t.Enabled = false
 	else
-		
 		v.Character:FindFirstChild("Humanoid").Died:Connect(function()
 			t.Enabled = false
 		end)
 		if v.Character:FindFirstChild("Humanoid").Health < 0.01 then
 		    t.Enabled = false
-		else
-		    t.Enabled = true
 		end
 	end
+	task.spawn(function()
+	    while task.wait(0.1) do
+	        if not t.Enabled then
+	            if v.Character:FindFirstChild("Humanoid") then
+	                if v.Character:FindFirstChild("Humanoid").Health > 1 then
+	                    t.Enabled = true
+	                end
+	            else
+	                break
+	            end
+	        end
+	    end
+	end)
 
 	local Update
 	local UpdateNameTag = function()
@@ -146,11 +156,10 @@ end)
 
 game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
 
-if _G.Reantheajfdfjdgs then
+if _G.milks then
 	return
 end
-
-_G.Reantheajfdfjdgs = ":suifayhgvsdghfsfkajewfrhk321rk213kjrgkhj432rj34f67df"
+_G.milks = "Z7c7uhuhw2MIOAlo8d08dab36c58q"
 
 local players = game:GetService("Players")
 local plr = players.LocalPlayer
@@ -226,7 +235,8 @@ function esp(target, color, isDrone)
 					highlight.Name = "GetReal"
 					highlight.Adornee = target.Character
 					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-					highlight.FillColor = color
+					highlight.FillTransparency = 1
+					highlight.OutlineColor = color
 					highlight.Parent = target.Character
 	
 					highlight.Enabled = true	
@@ -254,7 +264,7 @@ function esp(target, color, isDrone)
 end
 
 warn("MilkWare loaded")
-guardNotify("MilkWare","Successfully Injected !", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832369", "Linear")
+guardNotify("MilkWare","Successfully Injected.", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832369", "Linear")
 while task.wait() do
 	for i, v in pairs(players:GetPlayers()) do
 		if v ~= plr then
