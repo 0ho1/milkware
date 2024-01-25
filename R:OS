@@ -146,7 +146,7 @@ local players = game:GetService("Players")
 local plr = players.LocalPlayer
 local dependencies = {workspace:WaitForChild("SE_Workspace")}
 
-local function tagDrone(drone)
+local function tagDrone(drone, color)
 	print(drone.Parent.Owner.Value.Name.."_drone")
 	
 	local vHolder = Holder:WaitForChild(drone.Parent.Owner.Value.Name.."_drone")
@@ -216,7 +216,7 @@ function esp(target, color, isDrone)
 	else
                 if target then
 			if not target:FindFirstChild("GetReal") then
-				tagDrone(target)
+				tagDrone(target, color)
 				
 				local highlight = Instance.new("Highlight")
 				highlight.RobloxLocked = true
