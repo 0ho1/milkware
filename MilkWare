@@ -1,0 +1,38 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/slf0Dev/Ocerium_Project/main/Library.lua"))()
+
+local supportedGames = {
+    8657766101 -- Marvellous Playground
+}
+
+local function InitializeMilkware()
+    local Window = Library.Main("MilkWare","LeftAlt")
+    if game:GetService("RunService"):IsStudio() then
+        game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Library").ResetOnSpawn = false
+    else
+        pcall(function()
+            game.CoreGui:FindFirstChild("Library").ResetOnSpawn = false
+        end)
+    end
+    local Main = Window.NewTab("Main")
+    local MainSection = Main.NewSection("Main")
+
+    return Window, Main, MainSection
+end
+
+function MarvellousHub()
+    local Window, Main, MainSection = InitializeMilkware()
+
+    local SonicTransform = MainSection.NewButton("Sonic Transform", function()
+        game:GetService("ReplicatedStorage"):WaitForChild("Characters"):WaitForChild("Sonic"):WaitForChild("Remotes"):WaitForChild("Transform"):FireServer()
+    end)
+end
+
+local gameHubs = {
+    ["8657766101"] = MarvellousHub
+}
+
+for i,v in pairs(supportedGames) do
+    if game.GameId == v then
+        gameHubs[tostring(v)]()
+    end
+end
