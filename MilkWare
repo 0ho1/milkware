@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/slf0Dev/Ocerium_Project/main/Library.lua"))()
 
 local supportedGames = {
-    8657766101 -- Marvellous Playground
+    16131896391 -- BuildFight
 }
 
 local function InitializeMilkware()
@@ -19,20 +19,47 @@ local function InitializeMilkware()
     return Window, Main, MainSection
 end
 
-function MarvellousHub()
+function BuildFight()
     local Window, Main, MainSection = InitializeMilkware()
 
-    local SonicTransform = MainSection.NewButton("Sonic Transform", function()
-        game:GetService("ReplicatedStorage"):WaitForChild("Characters"):WaitForChild("Sonic"):WaitForChild("Remotes"):WaitForChild("Transform"):FireServer()
+    local ChangeAppearance = MainSection.NewButton("Change Appearance [DEFAULT ONLY]", function()
+        game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("JoinGame"):InvokeServer()
+    end)
+    local KillAll = MainSection.NewButton("Kill All", function()
+        for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+          if v.Character then
+              pcall(function()
+                  local args = {
+                      [1] = v.Character.HumanoidRootPart,
+                      [2] = v.Character.Head.Position
+                  }
+                  
+                  game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("SwingMelee"):FireServer(unpack(args))
+              end)
+          end
+      end
+    end)
+    local OpenAllChests = MainSection.NewButton("Open All Chests", function()
+        for i,v in pairs(workspace.Chests:GetChildren()) do
+            if v:FindFirstChild("Ready") then
+                if v.Ready.Value then
+                    local args = {
+                        [1] = v:WaitForChild("OPEN")
+                    }
+        
+                    game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("OpenChest"):FireServer(unpack(args))
+                end
+            end
+        end
     end)
 end
 
-local gameHubs = {
-    ["8657766101"] = MarvellousHub
+local gameLoaders = {
+    ["16131896391"] = BuildFight
 }
 
 for i,v in pairs(supportedGames) do
-    if game.GameId == v then
-        gameHubs[tostring(v)]()
+    if game.PlaceId == v then
+        gameLoaders[tostring(v)]()
     end
 end
