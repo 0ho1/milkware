@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/slf0Dev/Ocerium_Project/main/Library.lua"))()
 
 local supportedGames = {
-    16131896391 -- BuildFight
+    5574096309 -- BuildFight
 }
 
 local function InitializeMilkware()
@@ -21,7 +21,59 @@ end
 
 function BuildFight()
     local Window, Main, MainSection = InitializeMilkware()
+    
+    local Parameters = RaycastParams.new()
+    Parameters.FilterDescendantsInstances = {game:GetService("Players").LocalPlayer.Character}
+    Parameters.FilterType = Enum.RaycastFilterType.Exclude
+    
+    local XPFarm = false
+    
+    local cam = workspace.CurrentCamera
 
+    local SilentAim = MainSection.NewButton("Silent Aim", function()
+        function getplrsname()
+            for i,v in pairs(game:GetChildren()) do
+                if v.ClassName == "Players" then
+                    return v.Name
+                end
+            end
+        end
+        local players = getplrsname()
+        local plr = game[players].LocalPlayer
+        coroutine.resume(coroutine.create(function()
+            while wait(0.1) do
+                coroutine.resume(coroutine.create(function()
+                    for i,v in pairs(game[players]:GetPlayers()) do
+                		if v.Name ~= plr.Name and v.Character:FindFirstChild('HumanoidRootPart') then
+                			local Root = v.Character:FindFirstChild('HumanoidRootPart')
+                			
+                			local isVisible = true
+                			
+                		    local function OnScreen(object)
+                            	local IsObsufcated = #cam:GetPartsObscuringTarget({object.Position},{object,char}) < 3
+                            	local _, OnScreen = cam:WorldToScreenPoint(object.Position)
+                            	return OnScreen and IsObsufcated 
+                		    end
+                		    isVisible = OnScreen(Root)
+                        
+                			local Size = Vector3.new(math.random(8,10),math.random(6,8),math.random(8,10))
+                			task.spawn(function()
+                			    if not isVisible then
+                    			    Size = Vector3.new(math.random(3,4),3,math.random(3,4))
+                    			end
+                			end)
+                			
+                			if Root:IsA("BasePart") then
+                			    Root.CanCollide = false
+                				Root.Size = Size
+                				Root.Transparency = 0.4
+                			end
+                		end
+                	end
+                end))
+            end
+        end))
+    end)
     local ChangeAppearance = MainSection.NewButton("Change Appearance [DEFAULT ONLY]", function()
         game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("JoinGame"):InvokeServer()
     end)
@@ -39,27 +91,40 @@ function BuildFight()
           end
       end
     end)
-    local OpenAllChests = MainSection.NewButton("Open All Chests", function()
-        for i,v in pairs(workspace.Chests:GetChildren()) do
-            if v:FindFirstChild("Ready") then
-                if v.Ready.Value then
-                    local args = {
-                        [1] = v:WaitForChild("OPEN")
-                    }
-        
-                    game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("OpenChest"):FireServer(unpack(args))
+    
+    local SimpleXPFarm = MainSection.NewToggle("Simple XP Farm",function(bool)
+        XPFarm = bool
+    end,false)
+    
+    task.spawn(function()
+        local function XP()
+            for i,v in pairs(workspace.Chests:GetChildren()) do
+                if v:FindFirstChild("Ready") then
+                    if v.Ready.Value then
+                        local args = {
+                            [1] = v:WaitForChild("OPEN")
+                        }
+            
+                        game:GetService("ReplicatedStorage"):WaitForChild("Rems"):WaitForChild("OpenChest"):FireServer(unpack(args))
+                    end
                 end
+            end
+        end
+        XPFarm = false
+        while task.wait() do
+            if XPFarm == true then
+                XP()
             end
         end
     end)
 end
 
 local gameLoaders = {
-    ["16131896391"] = BuildFight
+    ["5574096309"] = BuildFight
 }
 
 for i,v in pairs(supportedGames) do
-    if game.PlaceId == v then
+    if game.GameId == v then
         gameLoaders[tostring(v)]()
     end
 end
