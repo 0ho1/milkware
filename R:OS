@@ -267,19 +267,21 @@ end
 
 warn("MilkWare loaded")
 guardNotify("MilkWare","Successfully Injected.", 3, Color3.fromRGB(49, 55, 66), Color3.fromRGB(255, 102, 88), Color3.fromRGB(178, 255, 190), Color3.fromRGB(0, 0, 0), "rbxassetid://13628832369", "Linear")
-while task.wait() do
-	for i, v in pairs(players:GetPlayers()) do
-		if v ~= plr then
+task.spawn(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+for i, v in pairs(players:GetPlayers()) do
+	if v ~= plr then
 			esp(v, v.TeamColor.Color or ((plr.TeamColor == v.TeamColor)), false)
 		end
 	end
 	for i,v in pairs(dependencies[1]:FindFirstChild("Drones"):GetChildren()) do
-		if v:IsA("Model") and v:FindFirstChild("Humanoid") then
-			if v.Humanoid.Health > 0 then
-				if game:GetService("Players").LocalPlayer.Team == game.Teams:FindFirstChild("Defenders") then
-					esp(v:FindFirstChild("Drone"), game.Teams.Attackers.TeamColor, true)
+			if v:IsA("Model") and v:FindFirstChild("Humanoid") then
+				if v.Humanoid.Health > 0 then
+					if game:GetService("Players").LocalPlayer.Team == game.Teams:FindFirstChild("Defenders") then
+						esp(v:FindFirstChild("Drone"), game.Teams.Attackers.TeamColor, true)
+					end
 				end
 			end
 		end
-	end
-end
+	end)
+end)
