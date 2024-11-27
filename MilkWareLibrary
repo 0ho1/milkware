@@ -1,0 +1,34 @@
+local Library = {}
+
+function Library.Watermark()
+	local UI = Instance.new("ScreenGui", game.CoreGui)
+	UI.Name = "MilkWatermark"
+	UI.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+	UI.ResetOnSpawn = false
+
+	local TweenService = game:GetService("TweenService")
+
+	local IDE = Instance.new("ImageLabel", UI)
+	IDE.BackgroundTransparency = 1
+	--IDE.Image = "rbxassetid://84742632075811"
+	IDE.Image = "rbxassetid://12766887050"
+	IDE.ScaleType = Enum.ScaleType.Fit
+	IDE.Size = UDim2.fromScale(0.046, 0.111)
+	IDE.Position = UDim2.fromScale(0.012, 0.866)
+	local Dash = Instance.new("ImageLabel", UI)
+	Dash.BackgroundTransparency = 1
+	Dash.Image = "rbxassetid://12316542156"
+	Dash.ScaleType = Enum.ScaleType.Fit
+	Dash.Size = UDim2.fromScale(0.068, 0.163)
+	Dash.Position = UDim2.fromScale(0.001, 0.839)
+
+	local function Spin()
+		Dash.Rotation = 0
+		local Tween = TweenService:Create(Dash, TweenInfo.new(20, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Rotation = 360})
+		Tween:Play()
+		Tween.Completed:Connect(Spin)
+	end
+	Spin()
+end
+
+return Library
