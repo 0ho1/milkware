@@ -32,7 +32,7 @@ function Library.CreateUI()
 end
 
 function Library.InitUI()
-	local UI = CreateUI()
+	local UI = Library.CreateUI()
 	UI.Name = "UI"
 	UI.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 	UI.ResetOnSpawn = false
