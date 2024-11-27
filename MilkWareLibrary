@@ -1,34 +1,102 @@
-local Library = {}
+local Library = {
+	["FOV"] = 100;
+	["AimPart"] = "Head";
+	["Smoothing"] = 1;
+	["FOV_Gradient"] = true;
+	
+	["UI"] = nil
+}
 
-function Library.Watermark()
-	local UI = Instance.new("ScreenGui", game.CoreGui)
-	UI.Name = "MilkWatermark"
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+
+function Library:Configure(Setting, Value)
+	if Setting == "FOV" then
+		Value = math.min(Value, 100)
+		if Library.UI then
+			TweenService:Create(Library.UI:FindFirstChild("FOV_Circle"), {TweenInfo.new(0.1)}, {Size = UDim2.fromScale(Library.FOV / 100, Library.FOV / 100)}):Play()
+		end
+	elseif Setting == "Smoothing" then
+		Value = math.min(Value, 1)
+	end
+	
+	Library[Setting] = Value
+end
+
+local function CreateUI()
+	if RunService:IsStudio() then
+		return Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+	else
+		return Instance.new("ScreenGui", game.CoreGui)
+	end
+end
+
+function Library.InitUI()
+	local UI = CreateUI()
+	UI.Name = "UI"
 	UI.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 	UI.ResetOnSpawn = false
+	
+	Library.UI = UI
+end
 
-	local TweenService = game:GetService("TweenService")
-
-	local IDE = Instance.new("ImageLabel", UI)
-	IDE.BackgroundTransparency = 1
-	--IDE.Image = "rbxassetid://84742632075811"
-	IDE.Image = "rbxassetid://12766887050"
-	IDE.ScaleType = Enum.ScaleType.Fit
-	IDE.Size = UDim2.fromScale(0.046, 0.111)
-	IDE.Position = UDim2.fromScale(0.012, 0.866)
-	local Dash = Instance.new("ImageLabel", UI)
-	Dash.BackgroundTransparency = 1
-	Dash.Image = "rbxassetid://12316542156"
-	Dash.ScaleType = Enum.ScaleType.Fit
-	Dash.Size = UDim2.fromScale(0.068, 0.163)
-	Dash.Position = UDim2.fromScale(0.001, 0.839)
-
-	local function Spin()
-		Dash.Rotation = 0
-		local Tween = TweenService:Create(Dash, TweenInfo.new(20, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Rotation = 360})
-		Tween:Play()
-		Tween.Completed:Connect(Spin)
+function Library.InitFOVCircle()
+	if Library.UI ~= nil then
+		local FOVCircle = Instance.new("ImageLabel", Library.UI)
+		FOVCircle.Name = "FOV_Circle"
+		FOVCircle.Image = "rbxassetid://6835970470"
+		FOVCircle.ScaleType = Enum.ScaleType.Fit
+		FOVCircle.Position = UDim2.fromScale(0.5, 0.5)
+		FOVCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+		FOVCircle.BackgroundTransparency = 1
+		FOVCircle.Size = UDim2.fromScale(Library.FOV / 100, Library.FOV / 100)
+		
+		local Gradient = Instance.new("UIGradient", FOVCircle)
+		Gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.new(0.54, 0, 1)),
+			ColorSequenceKeypoint.new(0.35, Color3.new(0.7, 0.0, 0.6)),
+			ColorSequenceKeypoint.new(1, Color3.new(1, 0, 0.2))
+		})
+		local function Spin()
+			Gradient.Rotation = 0
+			local Tween = TweenService:Create(Gradient, TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Rotation = 360})
+			Tween:Play()
+			Tween.Completed:Connect(Spin)
+		end
+		Spin()
+	else
+		warn("Can't initialize FOVCircle; no UI initialized")
 	end
-	Spin()
+end
+
+function Library.Watermark()
+	if Library.UI ~= nil then
+		local IDE = Instance.new("ImageLabel", Library.UI)
+		IDE.Name = "IDE"
+		IDE.BackgroundTransparency = 1
+		--IDE.Image = "rbxassetid://84742632075811"
+		IDE.Image = "rbxassetid://12766887050"
+		IDE.ScaleType = Enum.ScaleType.Fit
+		IDE.Size = UDim2.fromScale(0.046, 0.111)
+		IDE.Position = UDim2.fromScale(0.012, 0.866)
+		local Dash = Instance.new("ImageLabel", Library.UI)
+		Dash.Name = "Dashed"
+		Dash.BackgroundTransparency = 1
+		Dash.Image = "rbxassetid://12316542156"
+		Dash.ScaleType = Enum.ScaleType.Fit
+		Dash.Size = UDim2.fromScale(0.068, 0.163)
+		Dash.Position = UDim2.fromScale(0.001, 0.839)
+
+		local function Spin()
+			Dash.Rotation = 0
+			local Tween = TweenService:Create(Dash, TweenInfo.new(20, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Rotation = 360})
+			Tween:Play()
+			Tween.Completed:Connect(Spin)
+		end
+		Spin()
+	else
+		warn("Can't watermark; no UI initialized")
+	end
 end
 
 return Library
