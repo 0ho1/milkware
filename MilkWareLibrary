@@ -14,7 +14,9 @@ function Library:Configure(Setting, Value)
 	if Setting == "FOV" then
 		Value = math.min(Value, 100)
 		if Library.UI then
-			TweenService:Create(Library.UI:FindFirstChild("FOV_Circle"), TweenInfo.new(0.1), {Size = UDim2.fromScale(Library.FOV / 100, Library.FOV / 100)}):Play()
+			if Library.UI:FindFirstChild("FOV_Circle") then
+				TweenService:Create(Library.UI:FindFirstChild("FOV_Circle"), TweenInfo.new(0.1), {Size = UDim2.fromScale(Library.FOV / 100, Library.FOV / 100)}):Play()
+			end
 		end
 	elseif Setting == "Smoothing" then
 		Value = math.min(Value, 1)
