@@ -23,7 +23,7 @@ function Library:Configure(Setting, Value)
 	Library[Setting] = Value
 end
 
-local function CreateUI()
+function Library.CreateUI()
 	if RunService:IsStudio() then
 		return Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 	else
